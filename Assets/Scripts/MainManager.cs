@@ -3,14 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using System.IO;
 
 public class MainManager : MonoBehaviour
 {
+    //public static MainManager Instance;
+
     public Brick BrickPrefab;
     public int LineCount = 6;
     public Rigidbody Ball;
 
     public Text ScoreText;
+    public Text ScoreBest;
+
+
     public GameObject GameOverText;
     
     private bool m_Started = false;
@@ -18,10 +24,13 @@ public class MainManager : MonoBehaviour
     
     private bool m_GameOver = false;
 
-    
+
+
     // Start is called before the first frame update
     void Start()
     {
+        UpdateBestScoreText();
+
         const float step = 0.6f;
         int perLine = Mathf.FloorToInt(4.0f / step);
         
@@ -62,15 +71,33 @@ public class MainManager : MonoBehaviour
         }
     }
 
+    //-------------------------------------------------------------
+    private void UpdateBestScoreText()
+    {
+        if (GameManager.Instance.highScores.Count > 0)
+        {
+            // Suponiendo que la primera entrada de highScores es la más alta
+            GameManager.HighScore bestScore = GameManager.Instance.highScores[0];
+            ScoreBest.text = $"Best Score: {bestScore.playerName} - {bestScore.score}";
+        }
+    }
+
+
     void AddPoint(int point)
     {
         m_Points += point;
-        ScoreText.text = $"Score : {m_Points}";
+        ScoreText.text = $" Name: {GameManager.Instance.ScoreName}  Score : {m_Points}";
     }
 
     public void GameOver()
     {
         m_GameOver = true;
         GameOverText.SetActive(true);
+
+        // Guarda la puntuación si es más alta que la anterior
+        GameManager.Instance.SaveHighScore(GameManager.Instance.ScoreName, m_Points);
+
+        // Actualiza la mejor puntuación en la UI
+        UpdateBestScoreText();
     }
 }
