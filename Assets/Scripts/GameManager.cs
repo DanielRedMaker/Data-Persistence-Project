@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System.Linq;
 
+
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
@@ -51,6 +52,12 @@ public class GameManager : MonoBehaviour
         public string playerName;
         public int score;
     }
+
+    [System.Serializable]
+    public class HighScoreList
+    {
+        public List<HighScore> highScores;
+    }
     //---------------------------------------------------------------------
     public void OnStartButtonPressed()
     {
@@ -85,17 +92,17 @@ public class GameManager : MonoBehaviour
 
     private void SaveHighScores()
     {
-        string json = JsonUtility.ToJson(this);
+        HighScoreList highScoreList = new HighScoreList { highScores = this.highScores };
+        string json = JsonUtility.ToJson(highScoreList);
         File.WriteAllText(Application.persistentDataPath + "/highscores.json", json);
     }
-
     private void LoadHighScores()
     {
         string path = Application.persistentDataPath + "/highscores.json";
         if (File.Exists(path))
         {
             string json = File.ReadAllText(path);
-            GameManager loadedData = JsonUtility.FromJson<GameManager>(json);
+            HighScoreList loadedData = JsonUtility.FromJson<HighScoreList>(json);
             highScores = loadedData.highScores;
         }
     }

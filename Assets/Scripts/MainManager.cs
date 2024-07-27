@@ -12,7 +12,7 @@ public class MainManager : MonoBehaviour
     public Brick BrickPrefab;
     public int LineCount = 6;
     public Rigidbody Ball;
-
+    public Button mainMenuButton;
     public Text ScoreText;
     public Text ScoreBest;
 
@@ -29,6 +29,7 @@ public class MainManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        mainMenuButton.gameObject.SetActive(false);
         UpdateBestScoreText();
 
         const float step = 0.6f;
@@ -93,11 +94,17 @@ public class MainManager : MonoBehaviour
     {
         m_GameOver = true;
         GameOverText.SetActive(true);
-
+        mainMenuButton.gameObject.SetActive(true);
         // Guarda la puntuación si es más alta que la anterior
         GameManager.Instance.SaveHighScore(GameManager.Instance.ScoreName, m_Points);
 
         // Actualiza la mejor puntuación en la UI
         UpdateBestScoreText();
+    }
+
+    public void ReturnMainMenu()
+    {
+        SceneManager.LoadScene("MainMenu");
+        GameManager.Instance.canvas.SetActive(true);
     }
 }
