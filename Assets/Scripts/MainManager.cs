@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System.IO;
 
+//INHERITANCE
 public class MainManager : MonoBehaviour
 {
     //public static MainManager Instance;

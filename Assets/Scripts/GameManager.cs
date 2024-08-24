@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour
     public string ScoreName;
     public TMP_InputField ImputFieldName;
     public List<HighScore> highScores = new List<HighScore>();
+    //ENCAPSULATION
     private const int MAX_HIGH_SCORES = 5;
 
     private void Awake()
@@ -27,6 +28,8 @@ public class GameManager : MonoBehaviour
             return;
         }
         Instance = this;
+
+
         //esto hace que los datos no se destruyan al cambiar de escena
         DontDestroyOnLoad(gameObject);
         //carga los datos si es que hay
@@ -59,6 +62,8 @@ public class GameManager : MonoBehaviour
         public List<HighScore> highScores;
     }
     //---------------------------------------------------------------------
+
+    //POLIMORFYSN
     public void OnStartButtonPressed()
     {
         // Obtiene el texto del InputField
@@ -89,7 +94,8 @@ public class GameManager : MonoBehaviour
 
         SaveHighScores();
     }
-
+   
+    //ABSTRACCTION
     private void SaveHighScores()
     {
         HighScoreList highScoreList = new HighScoreList { highScores = this.highScores };
